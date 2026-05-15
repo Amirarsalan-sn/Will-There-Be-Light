@@ -13,6 +13,8 @@ public class Door : MonoBehaviour {
     float DoorCloseAngle = 0.0f;
 	public AudioSource asource;
 	public AudioClip openDoor,closeDoor;
+	private bool playerIn = false;
+	public LevelManager levelManager;
 	// Use this for initialization
 	void Start () {
 		asource = GetComponent<AudioSource> ();
@@ -20,6 +22,10 @@ public class Door : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (playerIn && Input.GetKeyDown(KeyCode.E) && levelManager.doorLevel1Allowed) 
+		{
+			OpenDoor();
+		}
 		if (open)
 		{
             var target = Quaternion.Euler (0, DoorOpenAngle, 0);
@@ -38,6 +44,22 @@ public class Door : MonoBehaviour {
 		open =!open;
 		asource.clip = open?openDoor:closeDoor;
 		asource.Play ();
+	}
+
+	void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+			playerIn = true;
+        }
+    }
+
+	void OnTriggerExit(Collider other)
+	{
+		if (other.CompareTag("Player"))
+        {
+			playerIn = false;
+        }
 	}
 }
 }

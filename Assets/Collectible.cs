@@ -44,6 +44,10 @@ public class Collectible : MonoBehaviour
                 backpack.AddItem(item);
             }
 
+            if (itemId == "Gypsophila")
+            {
+                Object.FindAnyObjectByType<LevelManager>().flowerFound();
+            }
             Destroy(gameObject);
         }
     }
