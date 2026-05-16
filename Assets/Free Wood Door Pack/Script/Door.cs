@@ -7,7 +7,7 @@ namespace DoorScript
 
 
 public class Door : MonoBehaviour {
-	public bool open;
+	private bool open;
 	public float smooth = 1.0f;
 	float DoorOpenAngle = -90.0f;
     float DoorCloseAngle = 0.0f;
@@ -22,18 +22,21 @@ public class Door : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (playerIn && Input.GetKeyDown(KeyCode.E) && levelManager.doorLevel1Allowed) 
+		if (playerIn && Input.GetKeyDown(KeyCode.E) && levelManager.doorAllowed) 
 		{
+			//Debug.Log("player pressed E");
 			OpenDoor();
 		}
 		if (open)
 		{
+			//Debug.Log("door opening");
             var target = Quaternion.Euler (0, DoorOpenAngle, 0);
             transform.localRotation = Quaternion.Slerp(transform.localRotation, target, Time.deltaTime * 5 * smooth);
 	
 		}
 		else
 		{
+			//Debug.Log("door closing");
             var target1= Quaternion.Euler (0, DoorCloseAngle, 0);
             transform.localRotation = Quaternion.Slerp(transform.localRotation, target1, Time.deltaTime * 5 * smooth);
 	
@@ -42,12 +45,14 @@ public class Door : MonoBehaviour {
 
 	public void OpenDoor(){
 		open =!open;
+		//Debug.Log("open changed");
 		asource.clip = open?openDoor:closeDoor;
 		asource.Play ();
 	}
 
 	void OnTriggerEnter(Collider other)
     {
+		//Debug.Log("player enter.");
         if (other.CompareTag("Player"))
         {
 			playerIn = true;
@@ -56,6 +61,7 @@ public class Door : MonoBehaviour {
 
 	void OnTriggerExit(Collider other)
 	{
+		//Debug.Log("player out.");
 		if (other.CompareTag("Player"))
         {
 			playerIn = false;

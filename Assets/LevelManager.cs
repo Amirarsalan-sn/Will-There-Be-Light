@@ -3,14 +3,63 @@ using System.Collections;
 
 public class LevelManager : MonoBehaviour
 {
-    private int phase = 0;
+    private int phase = 2; // remember to change it
     private int level = 1;
     public Narrator narrator;
     bool runningPhase = false;
-    public bool doorLevel1Allowed = false;
+    public bool doorAllowed = false;
+
+    void Update()
+    {
+        switch (level)
+        {
+            case 1:
+                switch (phase)
+                {
+                    case 0:
+                        if (!runningPhase)
+                        {
+                            runningPhase = true;
+                            StartCoroutine(Level1Phase0());
+                        }
+                        break;
+                    case 1:
+                        if (!runningPhase)
+                        {
+                            runningPhase = true;
+                            StartCoroutine(Level1Phase1());
+                        }
+                        break;
+                    case 2:
+                        doorAllowed = true;
+                        break;
+                }
+                break;
+            case 2:
+                switch (phase)
+                {
+                    case 1:
+                        doorAllowed = false;
+                        break;
+                }
+                break;
+        }
+    }
+
+    public void flowerFound()
+    {
+        level = 1;
+        phase = 1;
+    }
+
+    public void level2EntryPassed()
+    {
+        level = 2;
+        phase = 1;
+    }
 
 
-    IEnumerator Start()
+    IEnumerator Level1Phase0()
     {
         narrator.SetButtonText("Continue");
         yield return new WaitForSeconds(3);
@@ -28,20 +77,9 @@ I have lost my flower, could you find it for me please?"
             @"What ?! You don't know what is a white Gypsophila? It's fine don't worry, my flower is very special! You will for sure recognize it once you see it :)"
         ));
         // Then enable movement or start gameplay, etc.
-    }
-    void Update()
-    {
-        if (level == 1 && phase == 1 && !runningPhase)
-        {
-            runningPhase = true;
-            StartCoroutine(Level1Phase1());
-        }
-    }
-
-    public void flowerFound()
-    {
         level = 1;
-        phase = 1;
+        phase = -1;
+        runningPhase = false;
     }
 
     IEnumerator Level1Phase1()
@@ -66,7 +104,6 @@ I have lost my flower, could you find it for me please?"
         // After sequence is done, advance state
         level = 1;
         phase = 2;
-        doorLevel1Allowed = true;
         runningPhase = false;
     }
 }
