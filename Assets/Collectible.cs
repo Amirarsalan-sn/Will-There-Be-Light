@@ -48,6 +48,10 @@ public class Collectible : MonoBehaviour
             {
                 Object.FindAnyObjectByType<LevelManager>().flowerFound();
             }
+            if (itemId == "Heart")
+            {
+                Object.FindAnyObjectByType<LevelManager>().heartTaken();
+            }
             Destroy(gameObject);
         }
     }
