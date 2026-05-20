@@ -5,8 +5,8 @@ public class LevelManager : MonoBehaviour
 {
     AudioSource audioSource;
     public AudioClip audioClip;
-    private int phase = 2; // remember to change it
-    private int level = 1;
+    private int phase = -1; // remember to change it
+    private int level = -1;
     public Narrator narrator;
     bool runningPhase = false;
     public bool doorAllowed = false;
