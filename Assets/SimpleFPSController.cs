@@ -6,7 +6,7 @@ public class SimpleFPSController : MonoBehaviour
     private AudioSource footstepSource;
     public AudioClip footstepClip;
     //float footstepTimer = 0f;
-    public float moveSpeed = 2f;
+    public float moveSpeed = 1f;
     public float mouseSensitivity = 2f;
     public float gravity = -9.81f;
     public Transform cameraTransform;
@@ -29,8 +29,9 @@ public class SimpleFPSController : MonoBehaviour
         // Movement
         float h = Input.GetAxis("Horizontal");   // A/D or Left/Right
         float v = Input.GetAxis("Vertical");     // W/S or Up/Down
-        Vector3 move = transform.right * h + transform.forward * v;
-        controller.Move(move * moveSpeed * Time.deltaTime);
+        Vector3 move = (transform.right * h + transform.forward * v)*moveSpeed;
+        Debug.Log(move);
+        controller.Move(move * Time.deltaTime);
 
         bool isMoving = move.magnitude > 0.01f;
         //Debug.Log("is moving: " + isMoving);

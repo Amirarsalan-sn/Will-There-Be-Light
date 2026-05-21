@@ -52,6 +52,10 @@ public class Collectible : MonoBehaviour
             {
                 Object.FindAnyObjectByType<LevelManager>().heartTaken();
             }
+            if (itemId == "Broken Heart")
+            {
+                Object.FindAnyObjectByType<LevelManager>().brokenHeartCollected();
+            }
             Destroy(gameObject);
         }
     }

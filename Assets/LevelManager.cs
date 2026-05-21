@@ -3,8 +3,22 @@ using System.Collections;
 
 public class LevelManager : MonoBehaviour
 {
-    AudioSource audioSource;
-    public AudioClip audioClip;
+    public AudioSource backGroundSource;
+    public AudioClip backGroundClip;
+    public AudioSource heartBeatSource;
+    public AudioClip heartBeatCalmClip;
+    public AudioClip heartBeatStressClip;
+    public AudioSource phoneRingChaos1Source;
+    public AudioClip phoneRingChaos1Clip;
+    public AudioSource phoneRingChaos2Source;
+    public AudioClip phoneRingChaos2Clip;
+    public AudioSource churchBellSource;
+    public AudioClip churchBellClip;
+    public AudioSource fireAlarmSource;
+    public AudioClip fireAlarmClip;
+    public AudioSource fireAlarmNarrativeSource;
+    public AudioClip fireAlarmNarrativeClip;
+    public AudioClip outroMusic;
     private int phase = -1; // remember to change it
     private int level = -1;
     public Narrator narrator;
@@ -12,18 +26,58 @@ public class LevelManager : MonoBehaviour
     public bool doorAllowed = false;
     public bool telephoneRing = false;
     public bool gramaphoneAllowed = false;
+    public bool discardItems = false;
     public GameObject loveLetter;
     public GameObject myLetter;
     public GameObject heart;
+
+    // level 3 prefabs.
+    public GameObject fixButton;
+    public GameObject furniture1;
+    public GameObject furniture2;
+    public GameObject furniture3;
+    public GameObject textGroup1;
+    public GameObject textGroup2;
+    public GameObject textGroup3;
+    public GameObject textGroup4;
+    public GameObject textGroup5;
+    public Light topLeftCorner1;
+    public Light topLeftCorner2;
+    public Light topRightCorner;
+    public Light bottomRightCorner;
+    public GameObject corridorEntered;
+    public GameObject brokenHeart;
+    public GameObject wall;
+    Vector3 initialWallPos;
+    float wallDropAmount = 5f;
+    float wallDropTime = 10f;
 
     private void Start()
     {
         loveLetter.SetActive(false);
         myLetter.SetActive(false);
         heart.SetActive(false);
-        audioSource = GetComponent<AudioSource>();
-        audioSource.clip = audioClip;
-        audioSource.Play();
+        backGroundSource.clip = backGroundClip;
+        heartBeatSource.clip = heartBeatCalmClip;
+        phoneRingChaos1Source.clip = phoneRingChaos1Clip;
+        phoneRingChaos2Source.clip = phoneRingChaos2Clip;
+        churchBellSource.clip = churchBellClip;
+        fireAlarmSource.clip = fireAlarmClip;
+        fireAlarmNarrativeSource.clip = fireAlarmNarrativeClip;
+        backGroundSource.Play();
+
+        // level3 activations
+
+        textGroup1.SetActive(false);
+        textGroup2.SetActive(false);
+        textGroup3.SetActive(false);
+        textGroup4.SetActive(false);
+        textGroup5.SetActive(false);
+        fixButton.SetActive(false);
+        corridorEntered.SetActive(false);
+        brokenHeart.SetActive(false);
+
+        initialWallPos = wall.transform.position;
     }
 
     void Update()
@@ -105,6 +159,122 @@ public class LevelManager : MonoBehaviour
 
                 }
                 break;
+            case 3:
+                switch (phase)
+                {
+                    case 1:
+                        if (!runningPhase)
+                        {
+                            runningPhase = true;
+                            StartCoroutine(Level3Phase1());
+                        }
+                        break;
+
+                    case 2:
+                        if (!runningPhase)
+                        {
+                            runningPhase = true;
+                            fixButton.SetActive(true);
+                            heartBeatSource.Stop();
+                            heartBeatSource.clip = heartBeatStressClip;
+                            heartBeatSource.Play();
+                            churchBellSource.Play();
+                        }
+                        break;
+
+                    case 3:
+
+                        if(!runningPhase)
+                        {
+                            runningPhase = true;
+                            phoneRingChaos1Source.Play();
+                            textGroup1.SetActive(true);
+                            furniture1.SetActive(false);
+                            StartCoroutine(Level3Phase2());
+                        }
+                        break;
+                    case 4: //40
+
+                        if(!runningPhase)
+                        {
+                            runningPhase= true;
+                            phoneRingChaos2Source.Play();
+                            textGroup2.SetActive(true);
+                            furniture2.SetActive(false);
+                        }
+                        break;
+                    case 5: //60
+                        if (!runningPhase)
+                        {
+                            runningPhase= true;
+                            fireAlarmSource.Play();
+                            textGroup3.SetActive(true);
+                            furniture3.SetActive(false);
+                            StartCoroutine(Level3Phase5());
+                        }
+                        break;
+                    case 6: //80
+                        if (!runningPhase)
+                        {
+                            runningPhase = true;
+                            textGroup4.SetActive(true);
+                        }
+                        break;
+                    case 7: // 100
+                        if (!runningPhase)
+                        {
+                            runningPhase = true;
+                            textGroup5.SetActive(true);
+                            fireAlarmNarrativeSource.Play();
+                            phoneRingChaos1Source.Stop();
+                            phoneRingChaos2Source.Stop();
+                            topLeftCorner1.color = Color.red;
+                            topLeftCorner2.color = Color.red;
+                            topRightCorner.color = Color.red;
+                            bottomRightCorner.color = Color.red;
+                        }
+                        break;
+                    case 8:
+                        if (!runningPhase)
+                        {
+                            runningPhase = true;
+                            StartCoroutine(Level3Phase8());
+                            doorAllowed = true;
+                            corridorEntered.SetActive(true);
+                        }
+                        break;
+                    case 9:
+                        if (!runningPhase)
+                        {
+                            runningPhase = true;
+                            corridorEntered.SetActive(false);
+                            runningPhase = true;
+                            churchBellSource.Stop();
+                            fireAlarmNarrativeSource.Stop();
+                            fireAlarmSource.Stop();
+                            doorAllowed = false;
+                            StartCoroutine(Level3Phase9());
+                        }
+                        break;
+                    case 10:
+                        if (!runningPhase)
+                        {
+                            runningPhase = true;
+                            heartBeatSource.clip = outroMusic;
+                            heartBeatSource.Play();
+                            brokenHeart.SetActive(true);
+                        }
+                        break;
+                    case 11:
+                        if (!runningPhase)
+                        {
+                            runningPhase = true;
+                            StartCoroutine(Level3Phase11());
+                        }
+                        break;
+
+                }
+                break;
         }
     }
 
@@ -150,6 +320,53 @@ public class LevelManager : MonoBehaviour
         runningPhase = false;
     }
 
+    public void pushPassed20()
+    {
+        level = 3;
+        phase = 3;
+        runningPhase = false;
+    }
+
+    public void pushPassed40()
+    {
+        level = 3;
+        phase = 4;
+        runningPhase = false;
+    }
+
+    public void pushPassed60()
+    {
+        level = 3;
+        phase = 5;
+        runningPhase = false;
+    }
+
+    public void pushPassed80()
+    {
+        level = 3;
+        phase = 6;
+        runningPhase = false;
+    }
+    public void pushPassed100()
+    {
+        level = 3;
+        phase = 7;
+        runningPhase = false;
+    }
+
+    public void pushPassed150()
+    {
+        level = 3;
+        phase = 8;
+        runningPhase = false;
+    }
+
+    public void brokenHeartCollected()
+    {
+        level = 3;
+        phase = 11;
+        runningPhase = false;
+    }
     public void level2EntryPassed()
     {
         level = 2;
@@ -175,6 +392,14 @@ public class LevelManager : MonoBehaviour
     {
         level = 3;
         phase = 1;
+        doorAllowed = false;
+        runningPhase = false;
+    }
+
+    public void level3CorridorReached()
+    {
+        level = 3;
+        phase = 9;
         runningPhase = false;
     }
     IEnumerator Level1Phase0()
@@ -227,12 +452,14 @@ I have lost my flower, could you find it for me please?"
 
     IEnumerator Level2Phase1()
     {
+        yield return new WaitForSeconds(3);
         yield return StartCoroutine(narrator.ShowMessage(
             "Looks like someone's calling. Don't you wanna answer the phone?"
         ));
     }
 
     IEnumerator Level2Phase2() {
+        yield return new WaitForSeconds(3);
         yield return StartCoroutine(narrator.ShowMessage(
             "Looks like you have a letter, it's on your desk. I'm curious to find out what does it say !!!"
         ));
@@ -245,6 +472,7 @@ I have lost my flower, could you find it for me please?"
     }
 
     IEnumerator Level2Phase4() {
+        yield return new WaitForSeconds(3);
         yield return StartCoroutine(narrator.ShowMessage(
             ":)...\nGo on...\nTake the big heart...\nIt's for you :\")"
         ));
@@ -253,7 +481,7 @@ I have lost my flower, could you find it for me please?"
     IEnumerator Level2Phase5()
     {
         yield return StartCoroutine(narrator.ShowMessage(
-            "Woow your back pack is almost full!\nSo glad you found someone in your life body! Wish the best of bests for you two. It must be an awsome feeling, and extraordinary experience, something you cannot compare to anything else!"
+            "Woow your back pack is almost full!\nSo glad you found someone in your life buddy! Wish the best of bests for you two. It must be an awsome feeling, and extraordinary experience, something you cannot compare to anything else!"
         ));
 
         yield return StartCoroutine(narrator.ShowMessage(
@@ -277,5 +505,107 @@ I have lost my flower, could you find it for me please?"
         yield return StartCoroutine(narrator.ShowMessage(
             "Hmm, nevermind, hopefully nothing bad has happened, let's move forward."
         ));
+        heartBeatSource.clip = heartBeatCalmClip;
+        heartBeatSource.Play();
+    }
+
+    IEnumerator Level3Phase1() {
+        yield return new WaitForSeconds(3);
+        yield return StartCoroutine(narrator.ShowMessage(
+            "...\nLooks like you have ran into conflicts...\nBut hey, there's nothing to worry about, things happen... people discuss... and then they solve their problems.\nYou guys can of course work it out!"
+        ));
+
+        level = 3;
+        phase = 2;
+        runningPhase = false;
+    }
+
+    IEnumerator Level3Phase2()
+    {
+        yield return new WaitForSeconds(1);
+        yield return StartCoroutine(narrator.ShowMessage(
+            "Don't let anything distract you, KEEP PUSHING!"
+        ));
+    }
+
+    IEnumerator Level3Phase5() {
+        yield return new WaitForSeconds(1);
+        yield return StartCoroutine(narrator.ShowMessage(
+            "KEEP PUSHINGGG!!!"
+        ));
+    }
+
+    IEnumerator Level3Phase8() {
+        yield return new WaitForSeconds(1);
+        yield return StartCoroutine(narrator.ShowMessage(
+            "STOP... STOP IT...\nYOU DID EVERYTHING YOU COULD, NOTHING IS REMAINED OF YOU, GET OUT OF THE ROOM\nNOW!"
+        ));
+    }
+
+    IEnumerator Level3Phase9() {
+        yield return new WaitForSeconds(3);
+
+        narrator.SetButtonText("What?!");
+        yield return StartCoroutine(narrator.ShowMessage(
+            "Why did you do that?"
+        ));
+
+        narrator.SetButtonText("Yes :(");
+        yield return StartCoroutine(narrator.ShowMessage(
+            "Why did you turn back? You know you can't reverse time right?"
+        ));
+
+        yield return new WaitForSeconds(20);
+
+
+        narrator.SetButtonText("No :(");
+        yield return StartCoroutine(narrator.ShowMessage(
+            "My friend\nThere's no way to the previous room. It's over...\nYou did what you could\nYou should let go..."
+        ));
+
+        yield return new WaitForSeconds(5);
+
+        narrator.SetButtonText("No!");
+        yield return StartCoroutine(narrator.ShowMessage(
+            "I know...\nI know how you feel\nI feel the pain in your heart\nCome on buddy... there's nothing you can do... you did EVERYTHING you could\nJust... let it go..."
+        ));
+
+        //yield return new WaitForSeconds(5);
+        narrator.SetButtonText("NO!!!");
+        yield return StartCoroutine(narrator.ShowMessage(
+            "The belongings in your backpack...\nIt's a heavy burden upon your shoulders...\nYou MUST let go..."
+        ));
+
+        //yield return new WaitForSeconds(5);
+        heartBeatSource.Stop();
+        narrator.continueButtonLabel.fontSize = 12;
+        narrator.SetButtonText("Empty backpack");
+        yield return StartCoroutine(narrator.ShowMessage(
+            "I know how much you have tried...\nHow much you have faught...You don't have to fight your own battles anymore...\nThat's life... things happen... hey that's not the end of the world!!\nCome on buddy, I know you can do it, I know you can..."
+        ));
+        yield return new WaitForSeconds(3);
+
+        level = 3;
+        phase = 10;
+        runningPhase = false;
+    }
+
+    IEnumerator Level3Phase11()
+    {
+        Transform wallTransform = wall.transform;
+
+        Vector3 start = initialWallPos;
+        Vector3 target = initialWallPos + Vector3.down * wallDropAmount;
+        float t = 0f;
+        while (t < wallDropTime)
+        {
+            t += Time.deltaTime;
+            float alpha = Mathf.Clamp01(t / wallDropTime);
+            wallTransform.position = Vector3.Lerp(start, target, alpha);
+            yield return null;
+        }
+
+        wallTransform.position = target;
+        yield return null;
     }
 }

@@ -10,8 +10,14 @@ public class ButtonPress : MonoBehaviour
     AudioSource clickSource;      // assigned in Inspector
     public AudioClip ac;
     public GameObject text;
-
-    public int pressCount { get; private set; } = 0;
+    public LevelManager levelManager;
+    int pressCount = 0;
+    bool announced20 = false;
+    bool announced40 = false;
+    bool announced60 = false;
+    bool announced80 = false;
+    bool announced100 = false;
+    bool announced120 = false;
 
     Vector3 initialLocalPosition;
     bool isAnimating = false;
@@ -30,6 +36,32 @@ public class ButtonPress : MonoBehaviour
         if (playerInRange && !isAnimating && Input.GetKeyDown(KeyCode.E))
         {
             StartCoroutine(PressRoutine());
+        }
+
+        if (pressCount == 20 && !announced20)
+        {
+            announced20 = true;
+            levelManager.pushPassed20();
+        } else if (pressCount == 40 && !announced40)
+        {
+            announced40 = true;
+            levelManager.pushPassed40();
+        } else if (pressCount == 60 && !announced60)
+        {
+            announced60 = true;
+            levelManager.pushPassed60();
+        } else if (pressCount == 80 && !announced80)
+        {
+            announced80 = true;
+            levelManager.pushPassed80();
+        } else if (pressCount == 100 && !announced100)
+        {
+            announced100 = true;
+            levelManager.pushPassed100();
+        } else if (pressCount == 120 && !announced120)
+        {
+            announced120 = true;
+            levelManager.pushPassed150();
         }
     }
 

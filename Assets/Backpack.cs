@@ -14,9 +14,11 @@ public class Backpack : MonoBehaviour
     public GameObject backpackPanel;          // UI panel to show/hide
     public Transform itemsParent;             // parent for item UI icons
     public GameObject itemIconPrefab;         // prefab with an Image component
+    public LevelManager levelManager;
 
     List<BackpackItem> items = new List<BackpackItem>();
     bool isOpen = false;
+    bool haveDiscarded = false;
 
     void Start()
     {
@@ -28,6 +30,11 @@ public class Backpack : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.P))
         {
             ToggleBackpack();
+        }
+        if (levelManager.discardItems && !haveDiscarded)
+        {
+            DiscardItems();
+            haveDiscarded = true;
         }
     }
 
@@ -41,6 +48,15 @@ public class Backpack : MonoBehaviour
     {
         isOpen = !isOpen;
         backpackPanel.SetActive(isOpen);
+    }
+
+    void DiscardItems()
+    {
+        foreach (Transform child in itemsParent)
+        {
+            Destroy(child.gameObject);
+        }
+        items.Clear();
     }
 
     void RefreshUI()

@@ -33,6 +33,12 @@ public class LevelEntranceWhistler : MonoBehaviour
                 case 2.8f:
                     levelManager.level3EntryReached();
                     break;
+                case 3f:
+                    levelManager.level3Entered(); 
+                    break;
+                case 3.5f:
+                    levelManager.level3CorridorReached();
+                    break;
             }
         }
     }
