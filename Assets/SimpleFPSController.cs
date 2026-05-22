@@ -10,6 +10,7 @@ public class SimpleFPSController : MonoBehaviour
     public float mouseSensitivity = 2f;
     public float gravity = -9.81f;
     public Transform cameraTransform;
+    public LevelManager levelManager;
 
     Vector3 velocity;
     CharacterController controller;
@@ -25,12 +26,15 @@ public class SimpleFPSController : MonoBehaviour
 
     void Update()
     {
-
+        if (levelManager.wallDown)
+        {
+            velocity.y = 0f;
+        }
         // Movement
         float h = Input.GetAxis("Horizontal");   // A/D or Left/Right
         float v = Input.GetAxis("Vertical");     // W/S or Up/Down
         Vector3 move = (transform.right * h + transform.forward * v)*moveSpeed;
-        Debug.Log(move);
+        //Debug.Log(move);
         controller.Move(move * Time.deltaTime);
 
         bool isMoving = move.magnitude > 0.01f;

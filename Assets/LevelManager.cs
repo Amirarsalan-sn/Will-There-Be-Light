@@ -19,8 +19,11 @@ public class LevelManager : MonoBehaviour
     public AudioSource fireAlarmNarrativeSource;
     public AudioClip fireAlarmNarrativeClip;
     public AudioClip outroMusic;
-    private int phase = -1; // remember to change it
-    private int level = -1;
+    public AudioSource wallMoveSource;
+    public AudioClip wallMoveClip;
+    public BloomController bloomController;
+    private int phase = 0; // remember to change it
+    private int level = 1;
     public Narrator narrator;
     bool runningPhase = false;
     public bool doorAllowed = false;
@@ -46,11 +49,15 @@ public class LevelManager : MonoBehaviour
     public Light topRightCorner;
     public Light bottomRightCorner;
     public GameObject corridorEntered;
+    public GameObject level2whistler1;
+    public GameObject level2whistler2;
     public GameObject brokenHeart;
     public GameObject wall;
     Vector3 initialWallPos;
-    float wallDropAmount = 5f;
+    float wallDropAmount = 4f;
     float wallDropTime = 10f;
+    public bool wallDown = false;
+    public GameEndingController endingController;
 
     private void Start()
     {
@@ -64,6 +71,7 @@ public class LevelManager : MonoBehaviour
         churchBellSource.clip = churchBellClip;
         fireAlarmSource.clip = fireAlarmClip;
         fireAlarmNarrativeSource.clip = fireAlarmNarrativeClip;
+        wallMoveSource.clip = wallMoveClip;
         backGroundSource.Play();
 
         // level3 activations
@@ -241,6 +249,8 @@ public class LevelManager : MonoBehaviour
                             StartCoroutine(Level3Phase8());
                             doorAllowed = true;
                             corridorEntered.SetActive(true);
+                            level2whistler1.SetActive(false);
+                            level2whistler2.SetActive(false);
                         }
                         break;
                     case 9:
@@ -248,7 +258,6 @@ public class LevelManager : MonoBehaviour
                         {
                             runningPhase = true;
                             corridorEntered.SetActive(false);
-                            runningPhase = true;
                             churchBellSource.Stop();
                             fireAlarmNarrativeSource.Stop();
                             fireAlarmSource.Stop();
@@ -270,9 +279,23 @@ public class LevelManager : MonoBehaviour
                         {
                             runningPhase = true;
                             StartCoroutine(Level3Phase11());
+                            bloomController.IncreaseBloomOverTime(10, 10);
                         }
                         break;
-
+                    case 12:
+                        if(!runningPhase)
+                        {
+                            runningPhase = true;
+                            StartCoroutine(Level3Phase12());
+                        }
+                        break;
+                    case 13:
+                        if (!runningPhase)
+                        {
+                            runningPhase = true;
+                            endingController.StartGameEnding();
+                        }
+                        break;
                 }
                 break;
         }
@@ -402,11 +425,31 @@ public class LevelManager : MonoBehaviour
         phase = 9;
         runningPhase = false;
     }
+
+    public void level3FinalHallReached()
+    {
+        level = 3;
+        phase = 12;
+        runningPhase = false;
+    }
+
     IEnumerator Level1Phase0()
     {
-        narrator.SetButtonText("Continue");
+        narrator.SetButtonText("(Enter)");
         yield return new WaitForSeconds(3);
         // Example: introductory line
+
+        yield return StartCoroutine(narrator.ShowMessage(
+            @"Hi :))
+Before we start, I would like to give you a tutorial:
+You can move with W/S/A/D + mouse.
+In order to collect an object (collectable ones) you just need to get close to it and press E.
+In order to see if a door is locked or not you should get close to it, once you were close enaugh, just look at it and press E.
+In order to open an unlocked door, get closer to it and press E.
+The doors close automatically (or manually by again pressing E).
+"
+        ));
+        narrator.SetButtonText("Continue");
         yield return StartCoroutine(narrator.ShowMessage(
             @"Welcome... to my brain :))
 I have lost my flower, could you find it for me please?"
@@ -547,7 +590,7 @@ I have lost my flower, could you find it for me please?"
 
         narrator.SetButtonText("What?!");
         yield return StartCoroutine(narrator.ShowMessage(
-            "Why did you do that?"
+            "Wait...\nWhy did you do that?"
         ));
 
         narrator.SetButtonText("Yes :(");
@@ -577,14 +620,15 @@ I have lost my flower, could you find it for me please?"
         ));
 
         //yield return new WaitForSeconds(5);
-        heartBeatSource.Stop();
-        narrator.continueButtonLabel.fontSize = 12;
+        narrator.continueButtonLabel.fontSize = 18;
         narrator.SetButtonText("Empty backpack");
         yield return StartCoroutine(narrator.ShowMessage(
             "I know how much you have tried...\nHow much you have faught...You don't have to fight your own battles anymore...\nThat's life... things happen... hey that's not the end of the world!!\nCome on buddy, I know you can do it, I know you can..."
         ));
+        heartBeatSource.Stop();
         yield return new WaitForSeconds(3);
 
+        discardItems = true;
         level = 3;
         phase = 10;
         runningPhase = false;
@@ -593,7 +637,7 @@ I have lost my flower, could you find it for me please?"
     IEnumerator Level3Phase11()
     {
         Transform wallTransform = wall.transform;
-
+        wallMoveSource.Play();
         Vector3 start = initialWallPos;
         Vector3 target = initialWallPos + Vector3.down * wallDropAmount;
         float t = 0f;
@@ -606,6 +650,52 @@ I have lost my flower, could you find it for me please?"
         }
 
         wallTransform.position = target;
+        wallMoveSource.Stop();
+        wallDown = true;
         yield return null;
+    }
+
+    IEnumerator Level3Phase12() {
+        yield return new WaitForSeconds(3);
+
+        narrator.continueButtonLabel.fontSize = 24;
+        narrator.SetButtonText("Continue");
+        yield return StartCoroutine(narrator.ShowMessage(
+            "You...\nYou did it!!!!"
+        ));
+
+        yield return new WaitForSeconds(5);
+        yield return StartCoroutine(narrator.ShowMessage(
+            "I KNEW IT...\nI KNEW YOU CAN DO IT."
+        ));
+
+        yield return new WaitForSeconds(5);
+        yield return StartCoroutine(narrator.ShowMessage(
+            "Of course it still hurts, it's supposed to...\nIt's gonna be like this for a long time unfortunately :("
+        ));
+
+        yield return new WaitForSeconds(5);
+        yield return StartCoroutine(narrator.ShowMessage(
+            "\"That's life\"...\nThat is what most people say, and honestly, I HATE IT.\nI hate when life acts like this and you just have to accept it because \"That's life\"??! Nonesense !\nBut... what can I say... after all it's true :("
+        ));
+
+        yield return new WaitForSeconds(5);
+        yield return StartCoroutine(narrator.ShowMessage(
+            "Be proud of yourself, you did what requires lots of bravery, what I couldn't do... \nDon't worry laddie... it's hard... but it'll pass...\nYou're gonna heal... I believe in you!"
+        ));
+
+        yield return new WaitForSeconds(5);
+        yield return StartCoroutine(narrator.ShowMessage(
+            "Well, that was my story...\nI know... I know...\nLife is still full of joy and wonders, full of undiscovered things...\nBut still, it sucks sometimes...\nSometimes it leaves a scare that hardly heals.\nI try to be grateful... but... my question to you is..."
+        ));
+
+        yield return new WaitForSeconds(5);
+        yield return StartCoroutine(narrator.ShowMessage(
+            "Will there be light for me in real life ??? :) ..."
+        ));
+        yield return new WaitForSeconds(5);
+        level = 3;
+        phase = 13;
+        runningPhase = false;
     }
 }

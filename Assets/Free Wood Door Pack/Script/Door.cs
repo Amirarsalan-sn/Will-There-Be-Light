@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 namespace DoorScript
 {
@@ -14,10 +15,16 @@ public class Door : MonoBehaviour {
 	public AudioSource asource;
 	public AudioClip openDoor,closeDoor;
 	private bool playerIn = false;
+	public GameObject promptUIFront;
+	public GameObject promptUIBack;
+	public TMP_Text promptTextFront;
+	public TMP_Text promptTextBack;
 	public LevelManager levelManager;
 	// Use this for initialization
 	void Start () {
 		asource = GetComponent<AudioSource> ();
+			promptUIFront.SetActive(false);
+			promptUIBack.SetActive(false);
 	}
 	
 	// Update is called once per frame
@@ -70,6 +77,22 @@ public class Door : MonoBehaviour {
 					OpenDoor();
 				}
         }
+	}
+
+	public void OnInteract() 
+	{ 
+		promptTextFront.text = levelManager.doorAllowed? "Unlocked" : "Locked";
+		promptTextBack.text = levelManager.doorAllowed? "Unlocked" : "Locked";
+		StartCoroutine(DoorInteract());
+	}
+
+	System.Collections.IEnumerator DoorInteract()
+	{
+		promptUIFront.SetActive(true);
+		promptUIBack.SetActive(true);
+		yield return new WaitForSeconds(3);
+		promptUIFront.SetActive(false);
+		promptUIBack.SetActive(false);
 	}
 }
 }

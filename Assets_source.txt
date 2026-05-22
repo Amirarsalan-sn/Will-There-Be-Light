@@ -1,0 +1,65 @@
+######Will There Be Light?#######
+
+###3D Assets###
+
+##Gypsophila Flower##
+
+- 'DEMO: Low Poly Flower Pack' from Unity Asset Store by Emilulz.
+
+##Housing Interior##
+
+- 'House Interior - Free' from Unity Asset Store by nappin.
+
+- 'Free Wood Door Pack' from Unity Asset Store by Biostart.
+
+- 'Persiang Carpets - URP' from Unity Asset Store by CGPAL.
+
+- 'VINTAGE LIVING ROOM 3D GAME PACK' from Unity Asset Store by ZNS3D.
+
+- 'P3D: Indoor Design Starter Kit (3D Models Furniture)' from Unity Asset Store by Phoenix3d Studio.
+
+##Broken Heart##
+
+- 'Broken Heart Two-Piece Love Heartbreak Symbol' from https://sketchfab.com/3d-models/broken-heart-two-piece-love-heartbreak-symbol-d53f95a1619f4e3cb0c5b5e2b35b2c00 by B1Blender.
+
+- 'Broken Heart png' from https://www.pngwing.com/en/free-png-zcvhn.
+
+##Red Heart##
+
+- 'Heart in Love' from https://sketchfab.com/3d-models/heart-in-love-f39ce19b92e246268f4c501b72ea7d0e by Azamuki.
+
+- 'Glossy red heart symbol a 3d render of a shiny heart' from https://www.magnific.com/free-psd/glossy-red-heart-symbol-3d-render-shiny-heart_405497124.htm#fromView=keyword&page=1&position=0&uuid=6b0e5c33-ad88-4ba3-bec1-aa948c7573e2&query=Red+heart+png by tohamina.
+
+##Envelope##
+
+- 'Letter & Envelope Assets' from https://sketchfab.com/3d-models/letter-envelope-assets-bb05f9a28e2b455da934a0b2ea2fc444 by WaajaaH.
+
+###Audios###
+
+- 'Draft And Wind.Synth 2.Indoor.Resonant(3osc).wav' from https://freesound.org/people/newlocknew/sounds/612185/ by newlocknew.
+
+- 'Orthodox church bell ringing_2.Close(Eq).wav' from https://freesound.org/people/newlocknew/sounds/592873/ by newlocknew.
+
+- 'Special Sound-Heartbeat 01' from https://freesound.org/people/miduno/sounds/671258/ by miduno.
+
+- '11111.wav' (the girl laugh behind the phone) from https://freesound.org/people/Sapereaudio/sounds/457394/ by Sapereaudio.
+
+- 'Peter Tchaikovsky - The Seasons: October: Autumn Song' (outro music) from https://www.yourclassical.org/episode/2018/10/09/daily-download-peter-tchaikovsky--the-seasons-october-autumn-song by Ilya Rashkovsky.
+
+- '1970 telephone ring 1-4 seconds cycle NL.wav' from https://freesound.org/people/klankbeeld/sounds/663840/ by klankbeeld.
+
+- 'BakelitePhoneRingSingleMono.wav' from https://freesound.org/people/HerbertBoland/sounds/30085/ by HerbertBoland.
+
+- 'Stone Door opening.wav' from https://freesound.org/people/jacko4526/sounds/656029/? by jacko4526.
+
+- 'Mouse Click Sound for Vlogs, Tutorial Videos and More' from https://freesound.org/people/inkedflorist/sounds/710039/ by inkedflorist.
+
+- 'Angry Door - Wooden Entrance Open Close Slam Hard A.wav' from https://freesound.org/people/hisoul/sounds/462665/ by hisoul.
+
+- 'Foot steps' from https://freesound.org/people/sim2710/sounds/262452/ by sim2710.
+
+- 'Clair de Lune (Debussy)' from https://pixabay.com/de/music/sch%c3%b6ne-st%c3%bccke-clair-de-lune-debussy-496382/ by KonstantinPazuzuStudio.
+
+###The Painting###
+
+- 'kiss' from https://commons.wikimedia.org/wiki/File:Klimt_-_Der_Kuss.jpeg by Gustav Klimt.

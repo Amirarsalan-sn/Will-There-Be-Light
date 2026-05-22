@@ -52,11 +52,8 @@ public class Backpack : MonoBehaviour
 
     void DiscardItems()
     {
-        foreach (Transform child in itemsParent)
-        {
-            Destroy(child.gameObject);
-        }
         items.Clear();
+        RefreshUI();
     }
 
     void RefreshUI()
