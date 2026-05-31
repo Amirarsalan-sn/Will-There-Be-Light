@@ -4,11 +4,24 @@ using System.Collections;
 public class GameEndingController : MonoBehaviour
 {
     public CanvasGroup panelCanvasGroup;  // on GameEndingPanel
-    public RectTransform body;           // same as before
+    public CanvasGroup title;
+    public CanvasGroup body1;
+    public CanvasGroup body2;
+    public CanvasGroup body3;
+    public CanvasGroup body4;
+    public CanvasGroup body5;
+    public CanvasGroup body6;
+    public CanvasGroup body7;
+    public CanvasGroup body8;
+    public CanvasGroup body9;
+    public CanvasGroup body10;
+    public CanvasGroup body11;
+    public CanvasGroup body12;
+    public CanvasGroup body13;
 
-    private float fadeDuration = 5f;
-    private float bodyTargetY = 4100f;
-    private float scrollDuration = 10f;
+    private float firstFadeDuration = 5f;
+    private float afterFadeDuration = 2f;
+    private float holdDuration = 2f;
 
     public void StartGameEnding()
     {
@@ -17,11 +30,29 @@ public class GameEndingController : MonoBehaviour
 
     IEnumerator GameEndingSequence()
     {
-        // 1) Fade in
+        /*// 1) Fade in
         yield return StartCoroutine(FadeInPanel());
         // 2) Scroll credits
-        yield return StartCoroutine(ScrollBody());
+        yield return StartCoroutine(ScrollBody());*/
+        yield return StartCoroutine(PanelFadeIn(panelCanvasGroup, firstFadeDuration/2));
 
+
+        yield return StartCoroutine(FadePanel(title, firstFadeDuration/2, afterFadeDuration));
+        yield return StartCoroutine(FadePanel(body1, afterFadeDuration, afterFadeDuration));
+        yield return StartCoroutine(FadePanel(body2, afterFadeDuration, afterFadeDuration));
+        yield return StartCoroutine(FadePanel(body3, afterFadeDuration, afterFadeDuration));
+        yield return StartCoroutine(FadePanel(body4, afterFadeDuration, afterFadeDuration));
+        yield return StartCoroutine(FadePanel(body5, afterFadeDuration, afterFadeDuration));
+        yield return StartCoroutine(FadePanel(body6, afterFadeDuration, afterFadeDuration));
+        yield return StartCoroutine(FadePanel(body7, afterFadeDuration, afterFadeDuration));
+        yield return StartCoroutine(FadePanel(body8, afterFadeDuration, afterFadeDuration));
+        yield return StartCoroutine(FadePanel(body9, afterFadeDuration, afterFadeDuration));
+        yield return StartCoroutine(FadePanel(body10, afterFadeDuration, afterFadeDuration));
+        yield return StartCoroutine(FadePanel(body11, afterFadeDuration, afterFadeDuration));
+        yield return StartCoroutine(FadePanel(body12, afterFadeDuration, afterFadeDuration));
+        yield return StartCoroutine(PanelFadeIn(body13, afterFadeDuration)); 
+
+        
         // 3) Wait for any key and quit
         yield return StartCoroutine(WaitForAnyKey());
 
@@ -32,7 +63,7 @@ public class GameEndingController : MonoBehaviour
 #endif
     }
 
-    IEnumerator FadeInPanel()
+    /*IEnumerator FadeInPanel()
     {
         float startAlpha = 0f;
         float endAlpha = 1f;
@@ -48,9 +79,60 @@ public class GameEndingController : MonoBehaviour
         }
 
         panelCanvasGroup.alpha = endAlpha;
+    }*/
+
+    IEnumerator FadePanel(CanvasGroup panel, float fadeInDuration, float fadeOutDuration)
+    {
+        float startAlpha = 0f;
+        float endAlpha = 1f;
+
+        float t = 0f;
+        while (t < fadeInDuration)
+        {
+            t += Time.deltaTime;
+            float alpha = Mathf.Clamp01(t / fadeInDuration);
+
+            panel.alpha = Mathf.Lerp(startAlpha, endAlpha, alpha);
+            yield return null;
+        }
+
+        panel.alpha = endAlpha;
+
+        yield return new WaitForSeconds(holdDuration);
+
+        startAlpha = 1f;
+        endAlpha = 0f;
+
+        t = 0f;
+        while (t < fadeOutDuration)
+        {
+            t += Time.deltaTime;
+            float alpha = Mathf.Clamp01(t / fadeInDuration);
+
+            panel.alpha = Mathf.Lerp(startAlpha, endAlpha, alpha);
+            yield return null;
+        }
+        panel.alpha = endAlpha;
     }
 
-    IEnumerator ScrollBody()
+    IEnumerator PanelFadeIn(CanvasGroup panel, float fadeInDuration) {
+        float startAlpha = 0f;
+        float endAlpha = 1f;
+
+        float t = 0f;
+        while (t < fadeInDuration)
+        {
+            t += Time.deltaTime;
+            float alpha = Mathf.Clamp01(t / fadeInDuration);
+
+            panel.alpha = Mathf.Lerp(startAlpha, endAlpha, alpha);
+            yield return null;
+        }
+
+        panel.alpha = endAlpha;
+    }
+
+    /*IEnumerator ScrollBody()
     {
         Vector2 startPos = body.anchoredPosition;
         Vector2 targetPos = new Vector2(startPos.x, bodyTargetY);
@@ -67,7 +149,7 @@ public class GameEndingController : MonoBehaviour
         }
 
         body.anchoredPosition = targetPos;
-    }
+    }*/
 
     IEnumerator WaitForAnyKey()
     {

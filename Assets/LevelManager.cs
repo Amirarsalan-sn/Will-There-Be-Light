@@ -30,6 +30,8 @@ public class LevelManager : MonoBehaviour
     public bool telephoneRing = false;
     public bool gramaphoneAllowed = false;
     public bool discardItems = false;
+    public bool collectAllowed = false;
+    public bool answerAllowed = false;
     public GameObject loveLetter;
     public GameObject myLetter;
     public GameObject heart;
@@ -51,6 +53,7 @@ public class LevelManager : MonoBehaviour
     public GameObject corridorEntered;
     public GameObject level2whistler1;
     public GameObject level2whistler2;
+    public GameObject level3OutroWhistler;
     public GameObject brokenHeart;
     public GameObject wall;
     Vector3 initialWallPos;
@@ -106,6 +109,7 @@ public class LevelManager : MonoBehaviour
                         if (!runningPhase)
                         {
                             runningPhase = true;
+                            collectAllowed = false;
                             StartCoroutine(Level1Phase1());
                         }
                         break;
@@ -155,6 +159,7 @@ public class LevelManager : MonoBehaviour
                         }
                         break;
                     case 6:
+                        collectAllowed = false;
                         doorAllowed = true;
                         break;
                     case 7:
@@ -270,6 +275,7 @@ public class LevelManager : MonoBehaviour
                         {
                             runningPhase = true;
                             heartBeatSource.clip = outroMusic;
+                            collectAllowed = true;
                             heartBeatSource.Play();
                             brokenHeart.SetActive(true);
                         }
@@ -285,6 +291,7 @@ public class LevelManager : MonoBehaviour
                     case 12:
                         if(!runningPhase)
                         {
+                            level3OutroWhistler.SetActive(false);
                             runningPhase = true;
                             StartCoroutine(Level3Phase12());
                         }
@@ -444,7 +451,7 @@ public class LevelManager : MonoBehaviour
 Before we start, I would like to give you a tutorial:
 You can move with W/S/A/D + mouse.
 In order to collect an object (collectable ones) you just need to get close to it and press E.
-In order to see if a door is locked or not you should get close to it, once you were close enaugh, just look at it and press E.
+In order to see if a door is locked or not you should get close to it, once you were close enough, just look at it and press E.
 In order to open an unlocked door, get closer to it and press E.
 The doors close automatically (or manually by again pressing E).
 "
@@ -463,6 +470,7 @@ I have lost my flower, could you find it for me please?"
             @"What ?! You don't know what is a white Gypsophila? It's fine don't worry, my flower is very special! You will for sure recognize it once you see it :)"
         ));
         // Then enable movement or start gameplay, etc.
+        collectAllowed = true;
         level = 1;
         phase = -1;
         runningPhase = false;
@@ -499,6 +507,7 @@ I have lost my flower, could you find it for me please?"
         yield return StartCoroutine(narrator.ShowMessage(
             "Looks like someone's calling. Don't you wanna answer the phone?"
         ));
+        answerAllowed = true;
     }
 
     IEnumerator Level2Phase2() {
@@ -519,12 +528,14 @@ I have lost my flower, could you find it for me please?"
         yield return StartCoroutine(narrator.ShowMessage(
             ":)...\nGo on...\nTake the big heart...\nIt's for you :\")"
         ));
+
+        collectAllowed = true;
     }
 
     IEnumerator Level2Phase5()
     {
         yield return StartCoroutine(narrator.ShowMessage(
-            "Woow your back pack is almost full!\nSo glad you found someone in your life buddy! Wish the best of bests for you two. It must be an awsome feeling, and extraordinary experience, something you cannot compare to anything else!"
+            "Woow your backpack is almost full!\nSo glad you found someone in your life buddy! Wish the best of bests for you two. It must be an awsome feeling, and extraordinary experience, something you cannot compare to anything else!"
         ));
 
         yield return StartCoroutine(narrator.ShowMessage(

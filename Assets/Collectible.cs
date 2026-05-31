@@ -5,11 +5,20 @@ public class Collectible : MonoBehaviour
     public string itemId;
     public Sprite itemIcon;
     public GameObject promptUI;    // The "E (Collect)" text object
-
+    LevelManager levelManager;
     bool playerInRange = false;
+
+    private void Start()
+    {
+        levelManager = Object.FindAnyObjectByType<LevelManager>();
+    }
 
     void OnTriggerEnter(Collider other)
     {
+        if (!levelManager.collectAllowed)
+        {
+            return;
+        }
         if (other.CompareTag("Player"))
         {
             playerInRange = true;
@@ -20,6 +29,10 @@ public class Collectible : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
+        if (!levelManager.collectAllowed)
+        {
+            return;
+        }
         if (other.CompareTag("Player"))
         {
             playerInRange = false;
@@ -46,15 +59,15 @@ public class Collectible : MonoBehaviour
 
             if (itemId == "Gypsophila")
             {
-                Object.FindAnyObjectByType<LevelManager>().flowerFound();
+                levelManager.flowerFound();
             }
             if (itemId == "Heart")
             {
-                Object.FindAnyObjectByType<LevelManager>().heartTaken();
+                levelManager.heartTaken();
             }
             if (itemId == "Broken Heart")
             {
-                Object.FindAnyObjectByType<LevelManager>().brokenHeartCollected();
+                levelManager.brokenHeartCollected();
             }
             Destroy(gameObject);
         }

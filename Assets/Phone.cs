@@ -63,7 +63,7 @@ public class Phone : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         //Debug.Log("Plager enter" + "level manager enabled? " + levelManager.telephoneRing);
-        if (other.CompareTag("Player") && levelManager.telephoneRing)
+        if (other.CompareTag("Player") && levelManager.telephoneRing && levelManager.answerAllowed)
         {
             //Debug.Log("satisfied, setting the prompt to active");
             UIPrompt.SetActive(true);
@@ -74,7 +74,7 @@ public class Phone : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         //Debug.Log("Plager exit" + "level manager enabled? " + levelManager.telephoneRing);
-        if (other.CompareTag("Player") && levelManager.telephoneRing)
+        if (other.CompareTag("Player") && levelManager.telephoneRing && levelManager.answerAllowed)
         {
             //Debug.Log("satisfied, setting the prompt to not active");
 
